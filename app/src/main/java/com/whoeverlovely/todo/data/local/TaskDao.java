@@ -27,5 +27,5 @@ public interface TaskDao {
     List<Task> getTasks();
 
     @Query("SELECT * FROM tasks WHERE id = :taskId")
-    Task getTaskById(String taskId);
+    Task getTaskById(int taskId);
 }

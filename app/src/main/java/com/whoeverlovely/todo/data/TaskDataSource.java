@@ -15,6 +15,6 @@ public interface TaskDataSource {
     }
 
     void getTasks(GetTasksCallback getTasksCallback);
-    void getTask(String taskId, GetTaskCallback getTaskCallback);
+    void getTask(int taskId, GetTaskCallback getTaskCallback);
 
 }
