@@ -80,4 +80,33 @@ public class LocalTaskDataSource implements TaskDataSource {
 
         mAppExecutors.getDiskIO().execute(runnable);
     }
+
+    @Override
+    public void refreshTasks() {
+        // TaskDataRepository will handle the logic for refreshTasks
+    }
+
+    @Override
+    public void completeTask(final int taskId) {
+        Runnable runnable = new Runnable() {
+            @Override
+            public void run() {
+                mTaskDao.updateTaskCompleted(taskId, true);
+            }
+        };
+
+        mAppExecutors.getDiskIO().execute(runnable);
+    }
+
+    @Override
+    public void activateTask(final int taskId) {
+        Runnable runnable = new Runnable() {
+            @Override
+            public void run() {
+                mTaskDao.updateTaskCompleted(taskId, false);
+            }
+        };
+
+        mAppExecutors.getDiskIO().execute(runnable);
+    }
 }

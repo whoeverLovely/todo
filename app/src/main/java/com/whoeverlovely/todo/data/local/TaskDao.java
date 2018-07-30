@@ -20,8 +20,8 @@ public interface TaskDao {
     @Delete()
     void deleteTask(Task task);
 
-    @Update
-    void updateTask(Task task);
+    @Query("UPDATE tasks SET completed = :completed WHERE id = :taskId")
+    void updateTaskCompleted(int taskId, boolean completed);
 
     @Query("SELECT * FROM tasks")
     List<Task> getTasks();

@@ -100,6 +100,57 @@ public class TaskDataRepository implements TaskDataSource {
         mCachedTasks.put(task.getId(), task);
     }
 
+    @Override
+    public void refreshTasks() {
+        mCacheIsDirty = true;
+    }
+
+    @Override
+    public void completeTask(final int taskId) {
+        mRemoteTaskDataSource.completeTask(taskId);
+        mLocalTaskDataSource.completeTask(taskId);
+
+        if (mCachedTasks != null) {
+            Task task = mCachedTasks.get(taskId);
+            task.setCompleted(true);
+        } else {
+            getTask(taskId, new GetTaskCallback() {
+                @Override
+                public void onTaskLoaded(Task task) {
+                    completeTask(task.getId());
+                }
+
+                @Override
+                public void onDataNotAvailable() {
+
+                }
+            });
+        }
+    }
+
+    @Override
+    public void activateTask(int taskId) {
+        mRemoteTaskDataSource.activateTask(taskId);
+        mLocalTaskDataSource.activateTask(taskId);
+
+        if (mCachedTasks != null) {
+            Task task = mCachedTasks.get(taskId);
+            task.setCompleted(false);
+        } else {
+            getTask(taskId, new GetTaskCallback() {
+                @Override
+                public void onTaskLoaded(Task task) {
+                    activateTask(task.getId());
+                }
+
+                @Override
+                public void onDataNotAvailable() {
+
+                }
+            });
+        }
+    }
+
     private void getTasksFromRemoteDataSource(final GetTasksCallback getTasksCallback) {
         mRemoteTaskDataSource.getTasks(new GetTasksCallback() {
             @Override

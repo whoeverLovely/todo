@@ -3,4 +3,9 @@
 
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="no_task_message">There is no task to display.</string>
+    <string name="task_loading_error_message">Something wrong when loading task list.</string>
+    <string name="successful_save_task_message">New task has been saved successfully!</string>
+    <string name="task_completed_message">The task has been marked as COMPLETED.</string>
+    <string name="task_activated_message">The task as been marked as ACTIVATED.</string>
 </resources>
