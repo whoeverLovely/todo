@@ -5,7 +5,7 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
-public class TaskDataRepository implements TaskDataSource{
+public class TaskDataRepository implements TaskDataSource {
 
     private TaskDataSource mLocalTaskDataSource;
     private TaskDataSource mRemoteTaskDataSource;
@@ -44,20 +44,60 @@ public class TaskDataRepository implements TaskDataSource{
             // Query the local database, if it's not available query remote data source
             getTasksFromLocalDataSource(getTasksCallback);
         }
-
-
-    }
-
-
-
-    @Override
-    public void getTask(int taskId, GetTaskCallback getTaskCallback) {
-
     }
 
     @Override
-    public void saveTask(Task tasks) {
+    public void getTask(final int taskId, final GetTaskCallback getTaskCallback) {
+        if (mCachedTasks != null) {
+            Task task = mCachedTasks.get(taskId);
+            if (task != null)
+                // Get task from cache
+                getTaskCallback.onTaskLoaded(task);
+            else
+                // Get task from local database when it's not available in cache
+                mLocalTaskDataSource.getTask(taskId, new GetTaskCallback() {
+                    @Override
+                    public void onTaskLoaded(Task task) {
+                        // Cache the task loaded from local database if the task exists in local database
+                        if (mCachedTasks == null)
+                            mCachedTasks = new LinkedHashMap<>();
+                        mCachedTasks.put(task.getId(), task);
+                        getTaskCallback.onTaskLoaded(task);
+                    }
 
+                    @Override
+                    public void onDataNotAvailable() {
+                        // Query remote data source if the task doesn't exist in local database
+                        mRemoteTaskDataSource.getTask(taskId, new GetTaskCallback() {
+                            @Override
+                            public void onTaskLoaded(Task task) {
+                                // Save the task loaded from remote data source to local database and memory cache
+                                mLocalTaskDataSource.saveTask(task);
+                                if (mCachedTasks == null)
+                                    mCachedTasks = new LinkedHashMap<>();
+                                mCachedTasks.put(task.getId(), task);
+                                getTaskCallback.onTaskLoaded(task);
+                            }
+
+                            @Override
+                            public void onDataNotAvailable() {
+                                getTaskCallback.onDataNotAvailable();
+
+                            }
+                        });
+                    }
+                });
+        }
+    }
+
+    @Override
+    public void saveTask(Task task) {
+        mRemoteTaskDataSource.saveTask(task);
+        mLocalTaskDataSource.saveTask(task);
+
+        if (mCachedTasks == null)
+            mCachedTasks = new LinkedHashMap<>();
+        mCachedTasks.put(task.getId(), task);
     }
 
     private void getTasksFromRemoteDataSource(final GetTasksCallback getTasksCallback) {
@@ -81,7 +121,7 @@ public class TaskDataRepository implements TaskDataSource{
             mCachedTasks = new LinkedHashMap<>();
 
         mCachedTasks.clear();
-        for(Task task:tasks) {
+        for (Task task : tasks) {
             mCachedTasks.put(task.getId(), task);
         }
 
@@ -89,7 +129,7 @@ public class TaskDataRepository implements TaskDataSource{
     }
 
     private void refreshLocalDataSource(List<Task> tasks) {
-        for (Task task: tasks) {
+        for (Task task : tasks) {
             mLocalTaskDataSource.saveTask(task);
         }
     }
