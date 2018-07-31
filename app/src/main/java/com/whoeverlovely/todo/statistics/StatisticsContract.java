@@ -7,7 +7,10 @@ public interface StatisticsContract {
     interface Presenter extends BasePresenter {
 
     }
-    interface View extends BaseView {
+    interface View extends BaseView<Presenter> {
 
+        void showStatistics(int completedTask, int activatedTask);
+
+        void showNoStatisticsMessage();
     }
 }

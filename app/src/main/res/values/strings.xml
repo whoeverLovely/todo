@@ -11,4 +11,5 @@
     <string name="task_not_available">The task doesn\'t available.</string>
     <string name="title">Title</string>
     <string name="enter_task_description_here">Enter task description here</string>
+    <string name="no_statistics_message">No statistics available.</string>
 </resources>
