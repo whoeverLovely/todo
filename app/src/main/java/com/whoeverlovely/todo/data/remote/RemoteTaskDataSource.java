@@ -35,7 +35,7 @@ public class RemoteTaskDataSource implements TaskDataSource {
                 else
                     getTasksCallback.onTasksLoaded(mTasks);
             }
-        }, 5000);
+        }, 2000);
 
     }
 
@@ -53,7 +53,7 @@ public class RemoteTaskDataSource implements TaskDataSource {
                 else
                     getTaskCallback.onTaskLoaded(task);
             }
-        }, 5000);
+        }, 1000);
 
     }
 
@@ -67,7 +67,7 @@ public class RemoteTaskDataSource implements TaskDataSource {
                     fakeRemoteDataInit();
                 mTasks.add(task);
             }
-        }, 5000);
+        }, 1000);
     }
 
     @Override

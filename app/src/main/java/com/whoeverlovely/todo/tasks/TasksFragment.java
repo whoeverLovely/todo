@@ -96,6 +96,9 @@ public class TasksFragment extends Fragment implements TasksContract.View {
         mSwipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
+                // Disable the progressbar in swipefreshLayout
+                mSwipeRefreshLayout.setRefreshing(false);
+
                 mPresenter.loadTasks(true);
             }
         });
@@ -195,6 +198,8 @@ public class TasksFragment extends Fragment implements TasksContract.View {
 
             if (task.isCompleted())
                 holder.itemView.setBackgroundColor(Color.LTGRAY);
+            else
+                holder.itemView.setBackgroundColor(getResources().getColor(android.R.color.background_light));
         }
 
         @Override
@@ -206,11 +211,6 @@ public class TasksFragment extends Fragment implements TasksContract.View {
         }
 
         class ViewHolder extends RecyclerView.ViewHolder {
-           /* @BindView(R.id.checkBox)
-            CheckBox mCheckBox;
-
-            @BindView(R.id.textView)
-            TextView mTextView;*/
 
             CheckBox mCheckBox;
             TextView mTextView;
@@ -232,7 +232,7 @@ public class TasksFragment extends Fragment implements TasksContract.View {
                     @Override
                     public void onClick(View v) {
                         Task task = mTasks.get(getAdapterPosition());
-                        if (task.isCompleted())
+                        if (!task.isCompleted())
                             mTasksItemListener.onCompletedTaskClick(task);
                         else
                             mTasksItemListener.onActivateTaskClick(task);

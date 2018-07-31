@@ -76,14 +76,16 @@ public class TasksPresenter implements TasksContract.Presenter {
     @Override
     public void completeTask(Task completedTask) {
         mTasksView.showTaskCompleted();
-//        loadTasks(false, false);
+        // Have to reload tasks to update background color
+        loadTasks(false, false);
         mTaskDataRepository.completeTask(completedTask.getId());
     }
 
     @Override
     public void activatedTask(Task activatedTask) {
         mTasksView.showTaskActivated();
-//        loadTasks(false, false);
+        // Have to reload tasks to update background color
+        loadTasks(false, false);
         mTaskDataRepository.activateTask(activatedTask.getId());
 
     }

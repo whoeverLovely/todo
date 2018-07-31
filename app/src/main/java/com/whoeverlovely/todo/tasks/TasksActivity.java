@@ -25,11 +25,12 @@ public class TasksActivity extends AppCompatActivity {
         // Add fragment
         TasksFragment tasksFragment = (TasksFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.content_frame);
-        if (tasksFragment == null)
+        if (tasksFragment == null) {
             tasksFragment = TasksFragment.newInstance();
-        FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
-        transaction.add(R.id.content_frame, tasksFragment);
-        transaction.commit();
+            FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+            transaction.add(R.id.content_frame, tasksFragment);
+            transaction.commit();
+        }
 
         // Create presenter
         TaskDataSource localTaskDataSource = LocalTaskDataSource
