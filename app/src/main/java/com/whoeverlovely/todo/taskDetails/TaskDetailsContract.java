@@ -13,10 +13,13 @@ public interface TaskDetailsContract {
         void showTaskCompletedMessage();
         void showTaskActivatedMessage();
 
+        void showAddEditTask(int taskId);
     }
 
     interface Presenter extends BasePresenter {
         void completeTask(Task task);
         void activateTask(Task task);
+
+        void editTask();
     }
 }

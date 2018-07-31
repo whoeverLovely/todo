@@ -1,4 +1,4 @@
-package com.whoeverlovely.todo.taskDetails;
+package com.whoeverlovely.todo.addEditTask;
 
 import android.content.Intent;
 import android.support.v4.app.FragmentTransaction;
@@ -13,38 +13,41 @@ import com.whoeverlovely.todo.data.local.TodoDatabase;
 import com.whoeverlovely.todo.data.remote.RemoteTaskDataSource;
 import com.whoeverlovely.todo.util.AppExecutors;
 
-public class TaskDetailsActivity extends AppCompatActivity {
+import timber.log.Timber;
 
-    public static final String EXTRA_TASK_ID = "task_id";
+public class AddEditTaskActivity extends AppCompatActivity {
+
+    public static final int REQUEST_ADD_TASK = 1;
     public static final int TASK_DEFAULT_ID = -1;
+    public static final String EXTRA_TASK_ID = "task_id";
 
-    TaskDetailsContract.Presenter mPresenter;
+    private AddEditTaskContract.Presenter mPresent;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_task_details);
+        setContentView(R.layout.activity_add_edit);
 
         // Retrieve taskId from extra
         Intent intent = getIntent();
         int taskId = intent.getIntExtra(EXTRA_TASK_ID, TASK_DEFAULT_ID);
 
         // Add fragment
-        TaskDetailsFragment fragment = (TaskDetailsFragment) getSupportFragmentManager()
-                .findFragmentById(R.id.content_frame);
+        AddEditTaskFragment fragment = (AddEditTaskFragment) getSupportFragmentManager().findFragmentById(R.id.content_frame);
         if (fragment == null) {
-            fragment = TaskDetailsFragment.newInstance(taskId);
-
+            fragment = AddEditTaskFragment.newInstance();
             FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
             transaction.add(R.id.content_frame, fragment);
             transaction.commit();
         }
 
-        // Create Presenter
+        // Create presenter
+
         TaskDataSource localTaskDataSource = LocalTaskDataSource
                 .getInstance(TodoDatabase.getInstance(this).taskDao(), new AppExecutors());
         TaskDataSource remoteTaskDataSource = RemoteTaskDataSource.getInstance();
-        mPresenter = new TaskDetailsPresenter(fragment, TaskDataRepository
+        mPresent = new AddEditTaskPresenter(fragment, TaskDataRepository
                 .getInstance(localTaskDataSource, remoteTaskDataSource), taskId);
+
     }
 }

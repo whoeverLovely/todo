@@ -6,6 +6,9 @@ import android.os.Looper;
 import com.whoeverlovely.todo.data.Task;
 import com.whoeverlovely.todo.data.TaskDataSource;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -13,11 +16,13 @@ public class RemoteTaskDataSource implements TaskDataSource {
 
     private static RemoteTaskDataSource instance;
 
-    private static List<Task> mTasks;
+    private static HashMap<Integer,Task> mTasks;
 
     public static synchronized RemoteTaskDataSource getInstance() {
-        if (instance == null)
+        if (instance == null) {
             instance = new RemoteTaskDataSource();
+            fakeRemoteDataInit();
+        }
         return instance;
     }
 
@@ -28,12 +33,10 @@ public class RemoteTaskDataSource implements TaskDataSource {
         handler.postDelayed(new Runnable() {
             @Override
             public void run() {
-                if (mTasks == null)
-                    fakeRemoteDataInit();
                 if (mTasks.isEmpty())
                     getTasksCallback.onDataNotAvailable();
                 else
-                    getTasksCallback.onTasksLoaded(mTasks);
+                    getTasksCallback.onTasksLoaded(new ArrayList<Task>(mTasks.values()));
             }
         }, 2000);
 
@@ -45,8 +48,6 @@ public class RemoteTaskDataSource implements TaskDataSource {
         handler.postDelayed(new Runnable() {
             @Override
             public void run() {
-                if (mTasks == null)
-                    fakeRemoteDataInit();
                 Task task = getFakeRemoteDataById(taskId);
                 if (task == null)
                     getTaskCallback.onDataNotAvailable();
@@ -63,9 +64,7 @@ public class RemoteTaskDataSource implements TaskDataSource {
         handler.postDelayed(new Runnable() {
             @Override
             public void run() {
-                if (mTasks == null)
-                    fakeRemoteDataInit();
-                mTasks.add(task);
+                mTasks.put(task.getId(), task);
             }
         }, 1000);
     }
@@ -90,25 +89,20 @@ public class RemoteTaskDataSource implements TaskDataSource {
             task.setCompleted(false);
     }
 
-    void fakeRemoteDataInit() {
-        mTasks = new LinkedList<>();
+    static void fakeRemoteDataInit() {
+        mTasks = new LinkedHashMap<>();
 
         Task task1 = new Task(100, "fake remote task 1 title", "fake remote task 1 description", false);
         Task task2 = new Task(101, "fake remote task 2 title", "fake remote task 2 description", false);
         Task task3 = new Task(102, "fake remote task 3 title", "fake remote task 3 description", false);
 
-        mTasks.add(task1);
-        mTasks.add(task2);
-        mTasks.add(task3);
-
+        mTasks.put(task1.getId(), task1);
+        mTasks.put(task2.getId(), task2);
+        mTasks.put(task3.getId(), task3);
     }
 
     Task getFakeRemoteDataById(int taskId) {
-        for (Task task : mTasks) {
-            if (task.getId() == taskId)
-                return task;
-        }
-        return null;
+        return mTasks.get(taskId);
     }
 
 }

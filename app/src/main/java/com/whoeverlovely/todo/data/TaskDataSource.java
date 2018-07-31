@@ -16,7 +16,7 @@ public interface TaskDataSource {
 
     void getTasks(GetTasksCallback getTasksCallback);
     void getTask(int taskId, GetTaskCallback getTaskCallback);
-    void saveTask(Task tasks);
+    void saveTask(Task task);
     void refreshTasks();
     void completeTask(int taskId);
     void activateTask(int taskId);

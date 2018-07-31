@@ -1,8 +1,11 @@
 package com.whoeverlovely.todo.taskDetails;
 
+import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
@@ -13,6 +16,7 @@ import android.widget.CompoundButton;
 import android.widget.TextView;
 
 import com.whoeverlovely.todo.R;
+import com.whoeverlovely.todo.addEditTask.AddEditTaskActivity;
 import com.whoeverlovely.todo.data.Task;
 import com.whoeverlovely.todo.tasks.TasksContract;
 
@@ -29,6 +33,9 @@ public class TaskDetailsFragment extends Fragment implements TaskDetailsContract
 
     @BindView(R.id.textView_taskDescription_taskDetails)
     TextView mTaskDescription;
+
+    @BindView(R.id.fab_edit)
+    FloatingActionButton mEditFab;
 
     TaskDetailsContract.Presenter mPresenter;
 
@@ -51,6 +58,13 @@ public class TaskDetailsFragment extends Fragment implements TaskDetailsContract
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_task_details, container, false);
         ButterKnife.bind(this, view);
+
+        mEditFab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mPresenter.editTask();
+            }
+        });
 
         return view;
     }
@@ -105,5 +119,20 @@ public class TaskDetailsFragment extends Fragment implements TaskDetailsContract
     @Override
     public void setPresenter(TaskDetailsContract.Presenter presenter) {
         mPresenter = presenter;
+    }
+
+    @Override
+    public void showAddEditTask(int taskId) {
+        Intent intent = new Intent(getActivity(), AddEditTaskActivity.class);
+        intent.putExtra(AddEditTaskActivity.EXTRA_TASK_ID, taskId);
+        startActivityForResult(intent, AddEditTaskActivity.REQUEST_ADD_TASK);
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (requestCode == AddEditTaskActivity.REQUEST_ADD_TASK) {
+            if (resultCode == Activity.RESULT_OK)
+                getActivity().finish();
+        }
     }
 }

@@ -9,4 +9,6 @@
     <string name="task_completed_message">The task has been marked as COMPLETED.</string>
     <string name="task_activated_message">The task as been marked as ACTIVATED.</string>
     <string name="task_not_available">The task doesn\'t available.</string>
+    <string name="title">Title</string>
+    <string name="enter_task_description_here">Enter task description here</string>
 </resources>

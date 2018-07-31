@@ -61,4 +61,9 @@ public class TaskDetailsPresenter implements TaskDetailsContract.Presenter {
         mTaskDetailsView.showTaskActivatedMessage();
         mTaskDataRepository.activateTask(task.getId());
     }
+
+    @Override
+    public void editTask() {
+        mTaskDetailsView.showAddEditTask(mTaskId);
+    }
 }

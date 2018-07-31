@@ -5,6 +5,8 @@ import android.arch.persistence.room.Entity;
 import android.arch.persistence.room.Ignore;
 import android.arch.persistence.room.PrimaryKey;
 
+import com.google.common.base.Strings;
+
 @Entity(tableName = "tasks")
 public class Task {
 
@@ -49,6 +51,10 @@ public class Task {
 
     public boolean isCompleted() {
         return completed;
+    }
+
+    public boolean isEmpty() {
+        return Strings.isNullOrEmpty(title) && Strings.isNullOrEmpty(description);
     }
 
     public void setId(int id) {

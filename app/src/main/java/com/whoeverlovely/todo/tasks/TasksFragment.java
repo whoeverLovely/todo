@@ -18,7 +18,7 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.whoeverlovely.todo.R;
-import com.whoeverlovely.todo.addEditTask.AddEditActivity;
+import com.whoeverlovely.todo.addEditTask.AddEditTaskActivity;
 import com.whoeverlovely.todo.data.Task;
 import com.whoeverlovely.todo.taskDetails.TaskDetailsActivity;
 
@@ -113,6 +113,11 @@ public class TasksFragment extends Fragment implements TasksContract.View {
     }
 
     @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        mPresenter.result(requestCode, resultCode);
+    }
+
+    @Override
     public void setLoadingIndicator(boolean visible) {
         if (visible)
             mProgressBar.setVisibility(View.VISIBLE);
@@ -127,8 +132,8 @@ public class TasksFragment extends Fragment implements TasksContract.View {
 
     @Override
     public void showAddTask() {
-        Intent intent = new Intent(getContext(), AddEditActivity.class);
-        startActivityForResult(intent, AddEditActivity.REQUEST_ADD_TASK);
+        Intent intent = new Intent(getContext(), AddEditTaskActivity.class);
+        startActivityForResult(intent, AddEditTaskActivity.REQUEST_ADD_TASK);
     }
 
     @Override

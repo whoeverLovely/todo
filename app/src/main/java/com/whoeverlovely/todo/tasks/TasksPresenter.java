@@ -2,8 +2,7 @@ package com.whoeverlovely.todo.tasks;
 
 import android.app.Activity;
 
-import com.whoeverlovely.todo.BasePresenter;
-import com.whoeverlovely.todo.addEditTask.AddEditActivity;
+import com.whoeverlovely.todo.addEditTask.AddEditTaskActivity;
 import com.whoeverlovely.todo.data.Task;
 import com.whoeverlovely.todo.data.TaskDataRepository;
 import com.whoeverlovely.todo.data.TaskDataSource;
@@ -30,7 +29,7 @@ public class TasksPresenter implements TasksContract.Presenter {
 
     @Override
     public void result(int requestCode, int resultCode) {
-        if (requestCode == AddEditActivity.REQUEST_ADD_TASK && resultCode == Activity.RESULT_OK)
+        if (requestCode == AddEditTaskActivity.REQUEST_ADD_TASK && resultCode == Activity.RESULT_OK)
             mTasksView.showSuccessfulSavedMessage();
     }
 
