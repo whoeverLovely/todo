@@ -27,6 +27,8 @@
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
         tools:text="my first task"
+        android:textSize="@dimen/tasks_item"
+        android:padding="8dp"
         app:layout_constraintBottom_toBottomOf="@+id/checkBox"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/checkBox"

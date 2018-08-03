@@ -8,12 +8,14 @@ import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
+import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CheckBox;
+import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
@@ -34,9 +36,6 @@ public class TasksFragment extends Fragment implements TasksContract.View {
 
     @BindView(R.id.rv_tasks)
     RecyclerView mTasksRecyclerView;
-
-    @BindView(R.id.fab_add)
-    FloatingActionButton mAddFAB;
 
     @BindView(R.id.swipeRefreshLayout_tasks)
     SwipeRefreshLayout mSwipeRefreshLayout;
@@ -84,14 +83,11 @@ public class TasksFragment extends Fragment implements TasksContract.View {
         ButterKnife.bind(this, view);
 
         mTasksRecyclerView.setAdapter(mTaskAdapter);
-        mTasksRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
-
-        mAddFAB.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                mPresenter.addNewTask();
-            }
-        });
+        RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getActivity());
+        mTasksRecyclerView.setLayoutManager(layoutManager);
+        DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(mTasksRecyclerView.getContext(),
+                LinearLayout.VERTICAL);
+        mTasksRecyclerView.addItemDecoration(dividerItemDecoration);
 
         mSwipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override

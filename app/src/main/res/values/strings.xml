@@ -12,4 +12,7 @@
     <string name="title">Title</string>
     <string name="enter_task_description_here">Enter task description here</string>
     <string name="no_statistics_message">No statistics available.</string>
+    <string name="todo">TODO</string>
+    <string name="tasks">Tasks</string>
+    <string name="statistics">Statistics</string>
 </resources>
