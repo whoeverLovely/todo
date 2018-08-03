@@ -28,9 +28,6 @@ public class AddEditTaskFragment extends Fragment implements AddEditTaskContract
     @BindView(R.id.editText_description_addedit)
     EditText mDescriptionEditText;
 
-    @BindView(R.id.fab_done)
-    FloatingActionButton mDoneFab;
-
     AddEditTaskContract.Presenter mPresenter;
 
     public AddEditTaskFragment() {
@@ -48,7 +45,8 @@ public class AddEditTaskFragment extends Fragment implements AddEditTaskContract
         View view = inflater.inflate(R.layout.fragment_add_edit_task, container, false);
         ButterKnife.bind(this, view);
 
-        mDoneFab.setOnClickListener(new View.OnClickListener() {
+        FloatingActionButton doneFab = getActivity().findViewById(R.id.fab_done);
+        doneFab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 mPresenter.saveTask(mTitleEditText.getText().toString(), mDescriptionEditText.getText().toString());

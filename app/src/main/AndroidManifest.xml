@@ -17,9 +17,12 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".addEditTask.AddEditTaskActivity" />
+        <activity android:name=".addEditTask.AddEditTaskActivity"
+            android:parentActivityName=".tasks.TasksActivity"
+            android:windowSoftInputMode="adjustResize"/>
         <activity android:name=".statistics.StatisticsActivity" />
-        <activity android:name=".taskDetails.TaskDetailsActivity"></activity>
+        <activity android:name=".taskDetails.TaskDetailsActivity"
+            android:parentActivityName=".tasks.TasksActivity"/>
     </application>
 
 </manifest>
